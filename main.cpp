@@ -27,6 +27,13 @@ struct person{
     b = "it is a test";
     return c+a;
   }
+
+  std::string get_name(int id){
+    if(id == this->id)
+      return name;
+
+    return "";
+  }
 };
 
 void foo_person(const person& p){
@@ -39,24 +46,24 @@ std::string foo_return(int a){
 
 void test_msg_bus(){
   std::string key = "test_three_args";
-  bus.subscribe(key, &foo3);
+  bus.register_me(key, &foo3);
   auto c = std::make_shared<int>(2);
 
   std::string mod_str = "b";
-  bus.publish(key, 1, mod_str, c);
+  bus.fetch(key, 1, mod_str, c);
   std::cout <<mod_str<<"\n";
 
   std::string person_key = "test_person";
-  bus.subscribe(person_key, &foo_person);
+  bus.register_me(person_key, &foo_person);
   person p{1, "tom"};
-  bus.publish(person_key, p);
+  bus.fetch(person_key, p);
 
   std::string ret_key = "test_ret";
-  bus.subscribe(ret_key, foo_return);
+  bus.register_me(ret_key, foo_return);
 
-//  bus.publish(ret_key, 1);//will assert false
+//  bus.fetch(ret_key, 1);//will assert false
 
-  std::string result = bus.publish<std::string>(ret_key, 1);
+  std::string result = bus.fetch<std::string>(ret_key, 1);
   std::cout <<result<<"\n";
 }
 
@@ -65,16 +72,19 @@ void test_msg_bus1(){
   std::string key2 = "key2";
   std::string key3 = "key3";
   person p{1, "tom"};
-  bus.subscribe(key, &person::foo, &p);
-  bus.subscribe(key2, &person::foo_ret, &p);
-  bus.subscribe(key3, &person::foo_three, &p);
+  bus.register_me(key, &person::foo, &p);
+  bus.register_me(key2, &person::foo_ret, &p);
+  bus.register_me(key3, &person::foo_three, &p);
 
-  bus.publish(key, 1);
-  std::string ret = bus.publish<std::string>(key2, 1);
+  bus.fetch(key, 1);
+  std::string ret = bus.fetch<std::string>(key2, 1);
 
   int mod_int = 1;
   std::string mod_str = "n";
-  int result = bus.publish<int>(key3, mod_int, mod_str, 1);
+  int result = bus.fetch<int>(key3, mod_int, mod_str, 1); //fetch
+
+  std::string get_name_key = "get_name";
+  bus.register_me(get_name_key, &person::get_name, &p); //announcement
 
   std::cout<<ret<<'\n';
   std::cout<<result<<'\n';

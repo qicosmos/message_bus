@@ -27,7 +27,7 @@ public:
     return instance;
   }
 
-  template <typename Fn> bool subscribe(const std::string &key, Fn fn) {
+  template <typename Fn> bool register_me(const std::string &key, Fn fn) {
     if (invokers_.find(key) != invokers_.end()) {
       return false;
     }
@@ -41,7 +41,7 @@ public:
   template <
       typename Fn, typename Self,
       typename = std::enable_if_t<std::is_member_function_pointer<Fn>::value>>
-  bool subscribe(const std::string &key, const Fn &fn, Self *t) {
+  bool register_me(const std::string &key, const Fn &fn, Self *t) {
     if (invokers_.find(key) != invokers_.end()) {
       return false;
     }
@@ -53,7 +53,7 @@ public:
   }
 
   template <typename R, typename... Args>
-  R publish(const std::string &key, Args &&... args) {
+  R fetch(const std::string &key, Args &&... args) {
     auto it = invokers_.find(key);
     assert(it != invokers_.end());
     R result{};
@@ -62,7 +62,7 @@ public:
   }
 
   template <typename... Args>
-  void publish(const std::string &key, Args &&... args) {
+  void fetch(const std::string &key, Args &&... args) {
     auto it = invokers_.find(key);
     assert(it != invokers_.end());
 
