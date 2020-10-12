@@ -49,6 +49,7 @@ public:
     using Tuple = typename function_traits<Fn>::tuple_type;
     invokers_[key] = {std::bind(&invoker<Fn>::template apply_mem<Self>, fn, t,
                                 std::placeholders::_1, std::placeholders::_2)};
+    return false;
   }
 
   template <typename R, typename... Args>
