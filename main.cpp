@@ -37,12 +37,12 @@ void test_msg_bus(){
   bus.publish(person_key, p);
 
   std::string ret_key = "test_ret";
-  //bus.subscribe(ret_key, foo_return);
+  bus.subscribe(ret_key, foo_return);
 
-  bus.publish<std::string>(ret_key, 1);
+//  bus.publish(ret_key, 1);//will assert false
 
   std::string result = bus.publish<std::string>(ret_key, 1);
-  bus.publish(ret_key, 1);
+  std::cout <<result<<"\n";
 }
 
 int main(){
