@@ -84,7 +84,7 @@ void test_msg_bus1(){
   int result = bus.call<int>(key3, mod_int, mod_str, 1); //call
 
   std::string get_name_key = "get_name";
-  bus.register_me(get_name_key, &person::get_name, &p); //announcement
+  bus.register_me(get_name_key, &person::get_name, &p); //register me to the bus
 
   std::cout<<ret<<'\n';
   std::cout<<result<<'\n';
