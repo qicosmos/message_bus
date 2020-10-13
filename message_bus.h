@@ -53,7 +53,7 @@ public:
   }
 
   template <typename R, typename... Args>
-  R fetch(const std::string &key, Args &&... args) {
+  R call(const std::string &key, Args &&... args) {
     auto it = invokers_.find(key);
     assert(it != invokers_.end());
     R result{};
@@ -62,7 +62,7 @@ public:
   }
 
   template <typename... Args>
-  void fetch(const std::string &key, Args &&... args) {
+  void call(const std::string &key, Args &&... args) {
     auto it = invokers_.find(key);
     assert(it != invokers_.end());
 

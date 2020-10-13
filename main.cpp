@@ -50,20 +50,20 @@ void test_msg_bus(){
   auto c = std::make_shared<int>(2);
 
   std::string mod_str = "b";
-  bus.fetch(key, 1, mod_str, c);
+  bus.call(key, 1, mod_str, c);
   std::cout <<mod_str<<"\n";
 
   std::string person_key = "test_person";
   bus.register_me(person_key, &foo_person);
   person p{1, "tom"};
-  bus.fetch(person_key, p);
+  bus.call(person_key, p);
 
   std::string ret_key = "test_ret";
   bus.register_me(ret_key, foo_return);
 
-//  bus.fetch(ret_key, 1);//will assert false
+//  bus.call(ret_key, 1);//will assert false
 
-  std::string result = bus.fetch<std::string>(ret_key, 1);
+  std::string result = bus.call<std::string>(ret_key, 1);
   std::cout <<result<<"\n";
 }
 
@@ -76,12 +76,12 @@ void test_msg_bus1(){
   bus.register_me(key2, &person::foo_ret, &p);
   bus.register_me(key3, &person::foo_three, &p);
 
-  bus.fetch(key, 1);
-  std::string ret = bus.fetch<std::string>(key2, 1);
+  bus.call(key, 1);
+  std::string ret = bus.call<std::string>(key2, 1);
 
   int mod_int = 1;
   std::string mod_str = "n";
-  int result = bus.fetch<int>(key3, mod_int, mod_str, 1); //fetch
+  int result = bus.call<int>(key3, mod_int, mod_str, 1); //call
 
   std::string get_name_key = "get_name";
   bus.register_me(get_name_key, &person::get_name, &p); //announcement
