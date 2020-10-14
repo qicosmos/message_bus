@@ -3,4 +3,4 @@ Decouple complex object relationships
 
 complex relationships to simple:
 
-![complex](complex.png)  ![simple](simple.png)
+![complex](complex.png)                                      ![simple](simple.png)
